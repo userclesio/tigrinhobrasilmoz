@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fortune Tiger — Conta</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0300;
+      --bg2:     #180800;
+      --bg3:     #240c00;
+      --gold:    #D4A017;
+      --gold2:   #f0c020;
+      --green:   #22c55e;
+      --green2:  #4ade80;
+      --red:     #ef4444;
+      --text:    #f0dfc0;
+      --muted:   #8a6840;
+      --border:  rgba(200,148,20,.35);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SCREENS ── */
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    /* ══════════════════════════════════
+       LOGIN
+    ══════════════════════════════════ */
+    #screen-login {
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 0%, #3d1500 0%, #150600 60%, var(--bg) 100%);
+      padding: 24px 20px;
+    }
+    .login-logo { font-size: 4rem; text-align: center; margin-bottom: 6px; }
+    .login-title { font-size: 1.5rem; font-weight: 900; color: var(--gold); text-align: center; margin-bottom: 4px; }
+    .login-sub { font-size: .85rem; color: var(--muted); text-align: center; margin-bottom: 28px; }
+
+    .login-card {
+      background: rgba(25,8,0,.9);
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 28px 22px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 0 40px rgba(200,148,20,.1);
+    }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .12em; color: var(--muted); margin-bottom: 7px; }
+    .field input {
+      width: 100%; padding: 13px 15px;
+      background: rgba(255,255,255,.05);
+      border: 1.5px solid rgba(200,148,20,.28);
+      border-radius: 11px; color: var(--text); font-size: .97rem; outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus { border-color: var(--gold); }
+    .field input::placeholder { color: rgba(240,223,192,.28); }
+
+    .btn-primary {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #b88a10, var(--gold2) 50%, #b88a10);
+      color: #1a0800; font-weight: 900; font-size: 1.05rem;
+      border: none; border-radius: 13px; cursor: pointer;
+      transition: transform .1s, box-shadow .2s;
+      box-shadow: 0 4px 18px rgba(200,148,20,.4);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(200,148,20,.6); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* ══════════════════════════════════
+       BONUS WELCOME
+    ══════════════════════════════════ */
+    #screen-bonus {
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 0%, #3d1500 0%, #150600 60%, var(--bg) 100%);
+      padding: 24px 20px;
+    }
+    .bonus-card {
+      background: rgba(20,6,0,.92);
+      border: 2px solid var(--border);
+      border-radius: 22px; padding: 36px 24px;
+      width: 100%; max-width: 400px; text-align: center;
+      box-shadow: 0 0 50px rgba(200,148,20,.15);
+      animation: popIn .5s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn { from{transform:scale(.8);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+    .bonus-icon { font-size: 3.5rem; margin-bottom: 12px; }
+    .bonus-title { font-size: 1.7rem; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
+    .bonus-user { font-size: 1rem; color: var(--text); margin-bottom: 18px; }
+    .bonus-amount-label { font-size: .82rem; color: var(--muted); margin-bottom: 6px; }
+    .bonus-amount {
+      font-size: 3.2rem; font-weight: 900; color: var(--green2);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .bonus-amount-mt { font-size: 1.2rem; color: var(--green2); margin-bottom: 24px; }
+
+    /* ══════════════════════════════════
+       MAIN APP
+    ══════════════════════════════════ */
+    #screen-app {
+      background: var(--bg);
+      padding-bottom: 70px; /* tab bar height */
+    }
+
+    /* App Header */
+    .app-header {
+      width: 100%; max-width: 480px;
+      background: linear-gradient(135deg, #2a0e00, #1a0800);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .app-header-user { display: flex; align-items: center; gap: 10px; }
+    .avatar-sm {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), #a07010);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: .85rem; color: #1a0800;
+    }
+    .header-name { font-size: .9rem; font-weight: 700; color: var(--text); }
+    .header-id { font-size: .7rem; color: var(--muted); }
+    .header-balance {
+      background: rgba(0,0,0,.4); border: 1px solid var(--border);
+      border-radius: 10px; padding: 6px 14px; text-align: right;
+    }
+    .header-balance .lbl { font-size: .58rem; color: var(--muted); font-weight: 700; letter-spacing: .08em; display: block; }
+    .header-balance .val { font-size: 1rem; font-weight: 900; color: var(--gold); }
+
+    /* Tab Content */
+    .tab-content { display: none; width: 100%; max-width: 480px; padding: 16px; }
+    .tab-content.active { display: block; }
+
+    /* ── TAB: JOGO ── */
+    .round-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,.04); border-radius: 12px;
+      padding: 10px 14px; margin-bottom: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .round-bar span { font-size: .78rem; color: var(--muted); font-weight: 700; }
+    .round-progress { flex: 1; margin: 0 12px; height: 5px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; }
+    .round-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 99px; transition: width .4s ease; }
+
+    .slot-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+      background: rgba(12,4,0,.95);
+      border: 2px solid rgba(200,148,20,.5);
+      border-radius: 18px; padding: 12px; margin-bottom: 12px;
+      box-shadow: 0 0 24px rgba(200,148,20,.18);
+    }
+    .slot-cell {
+      background: rgba(4,1,0,.9); border: 1.5px solid rgba(200,148,20,.22);
+      border-radius: 10px; aspect-ratio: 1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.9rem;
+    }
+    .slot-cell.win {
+      border-color: var(--green2);
+      box-shadow: 0 0 12px rgba(74,222,128,.55);
+      animation: cellPulse .5s ease-in-out infinite alternate;
+    }
+    @keyframes cellPulse {
+      from{box-shadow:0 0 5px rgba(74,222,128,.3);}
+      to  {box-shadow:0 0 18px rgba(74,222,128,.85);}
+    }
+
+    .stats-row {
+      display: flex; justify-content: space-around;
+      background: rgba(10,3,0,.85); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 0; margin-bottom: 12px;
+    }
+    .stat-item { text-align: center; }
+    .stat-item .s-lbl { font-size: .56rem; font-weight: 800; color: var(--muted); letter-spacing: .08em; display: block; }
+    .stat-item .s-val { font-size: .85rem; font-weight: 900; }
+    .stat-bal .s-val  { color: var(--gold); }
+    .stat-bet .s-val  { color: var(--text); }
+    .stat-win .s-val  { color: var(--green2); }
+    .stat-sep { width: 1px; background: rgba(200,148,20,.18); }
+
+    .controls-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+    .btn-spin {
+      width: 78px; height: 78px;
+      background: radial-gradient(circle, #28c864, #15a040);
+      border: 3px solid rgba(255,255,255,.18); border-radius: 50%;
+      color: #fff; font-size: .95rem; font-weight: 900;
+      cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 4px 18px rgba(21,160,64,.55);
+      animation: glow 2s ease-in-out infinite;
+      transition: transform .1s;
+    }
+    .btn-spin:hover:not(:disabled) { transform: scale(1.07); animation: none; }
+    .btn-spin:active:not(:disabled) { transform: scale(.94); }
+    .btn-spin:disabled { background: radial-gradient(circle, #444, #222); animation: none; cursor: not-allowed; box-shadow: none; }
+    @keyframes glow {
+      0%,100%{box-shadow:0 4px 18px rgba(21,160,64,.55),0 0 0 0 rgba(74,222,128,.3);}
+      50%    {box-shadow:0 4px 18px rgba(21,160,64,.55),0 0 0 8px rgba(74,222,128,.0);}
+    }
+
+    .btn-tag2 {
+      padding: 8px 12px; min-width: 54px;
+      background: rgba(255,255,255,.04); border: 1.5px solid var(--border);
+      border-radius: 50px; color: var(--gold); font-size: .7rem; font-weight: 800;
+      cursor: pointer; transition: background .2s; text-align: center;
+    }
+    .btn-tag2.on { background: rgba(200,148,20,.25); border-color: var(--gold); color: var(--gold2); }
+    .btn-circ {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,.04); border: 1.5px solid var(--border);
+      border-radius: 50%; color: var(--gold); font-size: 1.2rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── TAB: SALDO ── */
+    .balance-hero {
+      background: linear-gradient(135deg, #2a1200, #180a00);
+      border: 1.5px solid var(--border); border-radius: 18px;
+      padding: 24px; text-align: center; margin-bottom: 16px;
+    }
+    .bal-label { font-size: .72rem; color: var(--muted); font-weight: 700; letter-spacing: .1em; margin-bottom: 8px; }
+    .bal-amount { font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1; }
+    .bal-bonus { font-size: .82rem; color: var(--muted); margin-top: 6px; }
+
+    .history-title { font-size: .9rem; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+    .tx-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 14px; margin-bottom: 8px;
+      background: rgba(255,255,255,.04); border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .tx-left { display: flex; align-items: center; gap: 10px; }
+    .tx-icon {
+      width: 34px; height: 34px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem; flex-shrink: 0;
+    }
+    .tx-icon.win  { background: rgba(34,197,94,.18); }
+    .tx-icon.loss { background: rgba(239,68,68,.12); }
+    .tx-desc { font-size: .85rem; font-weight: 700; color: var(--text); }
+    .tx-round { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    .tx-amount { font-size: .92rem; font-weight: 900; }
+    .tx-amount.win  { color: var(--green2); }
+    .tx-amount.loss { color: var(--red); }
+
+    /* ── TAB: CONFIG ── */
+    .config-section { margin-bottom: 20px; }
+    .config-section-title { font-size: .7rem; font-weight: 800; color: var(--muted); letter-spacing: .12em; margin-bottom: 10px; }
+    .config-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 13px; padding: 14px 16px; margin-bottom: 8px;
+    }
+    .config-label { font-size: .92rem; font-weight: 700; }
+    .config-sub { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+
+    .toggle {
+      width: 46px; height: 26px; border-radius: 99px;
+      background: rgba(255,255,255,.12); border: none; cursor: pointer;
+      position: relative; transition: background .2s; flex-shrink: 0;
+    }
+    .toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #fff; transition: left .2s;
+    }
+    .toggle.on { background: var(--green); }
+    .toggle.on::after { left: 23px; }
+
+    .user-info-card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 13px; padding: 16px;
+    }
+    .user-info-row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .user-info-row:last-child { margin-bottom: 0; }
+    .ui-key { font-size: .75rem; color: var(--muted); font-weight: 600; min-width: 70px; }
+    .ui-val { font-size: .85rem; font-weight: 700; color: var(--text); }
+
+    .btn-logout {
+      width: 100%; padding: 13px;
+      background: rgba(239,68,68,.1); border: 1.5px solid rgba(239,68,68,.3);
+      border-radius: 12px; color: #ef4444; font-size: .95rem; font-weight: 800;
+      cursor: pointer; transition: background .2s; margin-top: 4px;
+    }
+    .btn-logout:hover { background: rgba(239,68,68,.2); }
+
+    /* ── TAB: SAQUE ── */
+    .saque-lock {
+      background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 18px; padding: 32px 20px; text-align: center; margin-bottom: 16px;
+    }
+    .saque-lock-icon { font-size: 3rem; margin-bottom: 14px; }
+    .saque-lock-title { font-size: 1.1rem; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+    .saque-lock-sub { font-size: .85rem; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .progress-wrap { margin-bottom: 8px; }
+    .progress-bar {
+      width: 100%; height: 10px; border-radius: 99px;
+      background: rgba(255,255,255,.08); overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transition: width .6s ease;
+    }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: .75rem; margin-top: 6px;
+    }
+    .progress-label span { color: var(--muted); }
+    .progress-label strong { color: var(--gold); }
+
+    /* ── BOTTOM TAB BAR ── */
+    .tab-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(12,4,0,.97); border-top: 1px solid var(--border);
+      display: flex; z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+    .tab-btn {
+      flex: 1; padding: 10px 4px 12px;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      background: none; border: none; cursor: pointer;
+      transition: opacity .2s; opacity: .5;
+    }
+    .tab-btn.active { opacity: 1; }
+    .tab-btn .tab-icon { font-size: 1.3rem; }
+    .tab-btn .tab-label { font-size: .62rem; font-weight: 800; color: var(--gold); letter-spacing: .05em; }
+    .tab-btn.active .tab-label { color: var(--gold2); }
+
+    /* ── WIN OVERLAY ── */
+    #win-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.8); z-index: 50;
+      align-items: center; justify-content: center;
+    }
+    #win-overlay.show { display: flex; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+    .win-card2 {
+      background: radial-gradient(circle at 50% 30%, #3a1800, #0e0400);
+      border: 2px solid var(--gold); border-radius: 26px;
+      padding: 40px 32px 32px; text-align: center;
+      max-width: 320px; width: 90%;
+      box-shadow: 0 0 60px rgba(200,148,20,.45);
+      animation: popIn .4s cubic-bezier(.175,.885,.32,1.275);
+    }
+    .wc-badge { font-size: .78rem; font-weight: 800; color: var(--gold); letter-spacing: .1em; margin-bottom: 8px; }
+    .wc-syms  { font-size: 2.8rem; margin-bottom: 8px; }
+    .wc-amt   { font-size: 3.5rem; font-weight: 900; color: var(--green2); line-height: 1; }
+    .wc-mt    { font-size: 1.2rem; color: var(--green2); margin-bottom: 18px; }
+    .btn-cont {
+      padding: 12px 32px;
+      background: linear-gradient(135deg, #b88a10, var(--gold2) 50%, #b88a10);
+      color: #1a0800; font-weight: 900; font-size: .97rem;
+      border: none; border-radius: 11px; cursor: pointer;
+    }
+
+    /* Section cards */
+    .section-card {
+      background: rgba(20,6,0,.85); border: 1px solid var(--border);
+      border-radius: 16px; padding: 18px;
+      margin-bottom: 14px;
+    }
+    .section-card-title { font-size: .75rem; font-weight: 800; color: var(--muted); letter-spacing: .1em; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1 — LOGIN
+══════════════════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-logo">🐯</div>
+  <p class="login-title">Fortune Tiger</p>
+  <p class="login-sub">Acesse a sua conta para jogar</p>
+
+  <div class="login-card">
+    <div class="field">
+      <label for="lg-email">E-MAIL OU USUÁRIO</label>
+      <input id="lg-email" type="text" placeholder="exemplo@email.com" autocomplete="username">
+    </div>
+    <div class="field">
+      <label for="lg-pass">SENHA</label>
+      <input id="lg-pass" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 2 — BONUS WELCOME
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-bonus">
+  <div class="bonus-card">
+    <div class="bonus-icon">🎉</div>
+    <h1 class="bonus-title">Conta Verificada!</h1>
+    <p class="bonus-user">Parabéns, <strong id="bonus-username">Jogador</strong>!</p>
+    <p class="bonus-amount-label">O seu bônus disponível</p>
+    <div class="bonus-amount" id="bonus-display">8.478</div>
+    <div class="bonus-amount-mt">MT</div>
+    <button class="btn-primary" onclick="goToApp()">🐯 Começar a Jogar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3 — MAIN APP
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-app">
+
+  <!-- App Header -->
+  <div class="app-header">
+    <div class="app-header-user">
+      <div class="avatar-sm" id="app-avatar">J</div>
+      <div>
+        <div class="header-name" id="app-username">Jogador</div>
+        <div class="header-id" id="app-id">ID: #00000</div>
+      </div>
+    </div>
+    <div class="header-balance">
+      <span class="lbl">SALDO</span>
+      <span class="val" id="hdr-bal">8.478 MT</span>
+    </div>
+  </div>
+
+  <!-- ── TAB: JOGO ── -->
+  <div class="tab-content active" id="tab-jogo">
+    <div class="round-bar">
+      <span id="round-label">RODADA 0</span>
+      <div class="round-progress">
+        <div class="round-progress-fill" id="round-fill" style="width:0%"></div>
+      </div>
+      <span id="round-of">0/20</span>
+    </div>
+
+    <div class="slot-grid" id="slot-grid"></div>
+
+    <div class="stats-row">
+      <div class="stat-item stat-bal">
+        <span class="s-lbl">💰 SALDO</span>
+        <span class="s-val" id="st-bal">0 MT</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item stat-bet">
+        <span class="s-lbl">🎯 APOSTA</span>
+        <span class="s-val" id="st-bet">80 MT</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item stat-win">
+        <span class="s-lbl">🏆 GANHO</span>
+        <span class="s-val" id="st-win">0 MT</span>
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <button class="btn-tag2" id="btn-turbo" onclick="toggleTurbo()">TURBO</button>
+      <button class="btn-circ" onclick="">−</button>
+      <button class="btn-spin" id="btn-spin" onclick="girar()">GIRAR</button>
+      <button class="btn-circ" onclick="">+</button>
+      <button class="btn-tag2" id="btn-auto" onclick="toggleAuto()">AUTO</button>
+    </div>
+  </div>
+
+  <!-- ── TAB: SALDO ── -->
+  <div class="tab-content" id="tab-saldo">
+    <div class="balance-hero">
+      <p class="bal-label">SALDO ACTUAL</p>
+      <div class="bal-amount" id="bal-big">8.478 MT</div>
+      <p class="bal-bonus" id="bal-bonus-note">Bônus inicial: 8.478 MT</p>
+    </div>
+
+    <p class="history-title">Histórico de Transações</p>
+    <div id="tx-list">
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;padding:20px 0;">Nenhuma transação ainda</p>
+    </div>
+  </div>
+
+  <!-- ── TAB: CONFIGURAÇÃO ── -->
+  <div class="tab-content" id="tab-config">
+
+    <div class="config-section">
+      <p class="config-section-title">PREFERÊNCIAS DE JOGO</p>
+      <div class="config-row">
+        <div>
+          <div class="config-label">Som</div>
+          <div class="config-sub">Efeitos sonoros do jogo</div>
+        </div>
+        <button class="toggle on" id="tog-sound" onclick="toggleSound()"></button>
+      </div>
+      <div class="config-row">
+        <div>
+          <div class="config-label">Modo Turbo</div>
+          <div class="config-sub">Giros mais rápidos</div>
+        </div>
+        <button class="toggle" id="tog-turbo" onclick="toggleTurboConfig()"></button>
+      </div>
+    </div>
+
+    <div class="config-section">
+      <p class="config-section-title">CONTA</p>
+      <div class="user-info-card">
+        <div class="user-info-row">
+          <span class="ui-key">Usuário</span>
+          <span class="ui-val" id="cfg-user">—</span>
+        </div>
+        <div class="user-info-row">
+          <span class="ui-key">E-mail</span>
+          <span class="ui-val" id="cfg-email">—</span>
+        </div>
+        <div class="user-info-row">
+          <span class="ui-key">Rodadas</span>
+          <span class="ui-val" id="cfg-rounds">0 / 20</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()" style="margin-top:10px;">Terminar Sessão</button>
+    </div>
+  </div>
+
+  <!-- ── TAB: SAQUE ── -->
+  <div class="tab-content" id="tab-saque">
+    <div class="saque-lock">
+      <div class="saque-lock-icon">🔒</div>
+      <h3 class="saque-lock-title">Saque Bloqueado</h3>
+      <p class="saque-lock-sub">O saque mínimo é de <strong style="color:var(--gold)">10.000 MT</strong>.<br>Continue a jogar para desbloquear.</p>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="saque-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-label">
+          <strong id="saque-current">0 MT</strong>
+          <span>10.000 MT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <p class="section-card-title">COMO DESBLOQUEAR</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--gold);font-weight:900;font-size:1.1rem;">1.</span>
+          <span style="font-size:.87rem;color:var(--text);">Continue a girar e acumule mais bônus</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--gold);font-weight:900;font-size:1.1rem;">2.</span>
+          <span style="font-size:.87rem;color:var(--text);">Alcance o saldo de 10.000 MT</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <span style="color:var(--gold);font-weight:900;font-size:1.1rem;">3.</span>
+          <span style="font-size:.87rem;color:var(--text);">O botão de saque será desbloqueado automaticamente</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Tab Bar -->
+  <nav class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('jogo',this)">
+      <span class="tab-icon">🎮</span>
+      <span class="tab-label">JOGO</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('saldo',this)">
+      <span class="tab-icon">💰</span>
+      <span class="tab-label">SALDO</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('config',this)">
+      <span class="tab-icon">⚙️</span>
+      <span class="tab-label">CONFIG</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('saque',this)">
+      <span class="tab-icon">🏦</span>
+      <span class="tab-label">SAQUE</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- WIN OVERLAY -->
+<div id="win-overlay">
+  <div class="win-card2">
+    <p class="wc-badge">🎉 VOCÊ GANHOU!</p>
+    <div class="wc-syms" id="wc-syms"></div>
+    <div class="wc-amt"  id="wc-amt">0</div>
+    <div class="wc-mt">MT</div>
+    <button class="btn-cont" onclick="closeWin()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO
+══════════════════════════════════════════════════════════════ */
+const BONUS_START = 8478; // bônus inicial (MT)
+const STORAGE_KEY = 'tf_game2';
+
+/* ══════════════════════════════════════════════════════════════
+   PRESETS — 20 rodadas — começa em 8.478 MT, termina em 67 MT
+   12 ganhos / 8 perdas (mais ganhos que perdas)
+   Balanço: 8478→9118→7918→8558→7278→7758→8398→6798
+           →7438→7918→5518→6158→6638→4638→5278→5758
+           →3358→3838→2038→2518→67
+══════════════════════════════════════════════════════════════ */
+const PRESETS = [
+  /*R1  WIN +640 */ { cells:['🧧','🧧','🧧','🌕','💰','🍊','🍊','🌕','💰'], d: +640, line:[0,1,2] },
+  /*R2  LOSS     */ { cells:['🌕','💰','🍊','🧧','🌕','🍊','🍊','🌕','🧧'], d:-1200, line:null },
+  /*R3  WIN +640 */ { cells:['💰','💰','💰','🌕','🧧','🍊','🧧','🌕','🌕'], d: +640, line:[0,1,2] },
+  /*R4  LOSS     */ { cells:['🍊','🌕','🧧','💰','🍊','🌕','🌕','💎','🍊'], d:-1280, line:null },
+  /*R5  WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R6  WIN +640 */ { cells:['🧧','🧧','🧧','🌕','💰','🍊','🍊','🌕','💰'], d: +640, line:[0,1,2] },
+  /*R7  LOSS     */ { cells:['🌕','🍊','🧧','💰','🌕','🍊','🧧','🌕','💰'], d:-1600, line:null },
+  /*R8  WIN +640 */ { cells:['💰','💰','💰','🌕','🧧','🍊','🍊','🌕','🌕'], d: +640, line:[0,1,2] },
+  /*R9  WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R10 LOSS     */ { cells:['🍊','💰','🌕','🧧','🍊','💰','🌕','🧧','🍊'], d:-2400, line:null },
+  /*R11 WIN +640 */ { cells:['🧧','🧧','🧧','🌕','💰','🍊','🍊','🌕','💰'], d: +640, line:[0,1,2] },
+  /*R12 WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R13 LOSS     */ { cells:['🌕','💰','🍊','🧧','🌕','💰','🍊','🌕','🧧'], d:-2000, line:null },
+  /*R14 WIN +640 */ { cells:['💰','💰','💰','🌕','🧧','🍊','🍊','🌕','🌕'], d: +640, line:[0,1,2] },
+  /*R15 WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R16 LOSS     */ { cells:['🍊','🌕','🧧','💰','🍊','🌕','🌕','💎','🍊'], d:-2400, line:null },
+  /*R17 WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R18 LOSS     */ { cells:['🌕','💰','🍊','🧧','🌕','💰','🍊','🌕','🧧'], d:-1800, line:null },
+  /*R19 WIN +480 */ { cells:['🌕','🌕','🌕','💰','🧧','🍊','🧧','💰','🌕'], d: +480, line:[0,1,2] },
+  /*R20 LOSS     */ { cells:['🍊','💰','🌕','🧧','🍊','💰','🌕','🧧','🍊'], d:-2451, line:null },
+];
+
+/* ══════════════════════════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════════════════════════ */
+let state = {
+  logged: false, user: '', email: '',
+  balance: BONUS_START, round: 0,
+  sessionGain: 0, history: []
+};
+let spinning = false, turbo = false, auto = false, autoTimer = null;
+let muted = false;
+let cells = [];
+
+const SYMS = ['💰','🐯','🌕','🧧','💎','🍊'];
+
+/* ══════════════════════════════════════════════════════════════
+   LOCALSTORAGE
+══════════════════════════════════════════════════════════════ */
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const s = JSON.parse(raw);
+    if (s && s.logged) { state = s; return true; }
+  } catch(e) {}
+  return false;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ♪ ÁUDIO
+══════════════════════════════════════════════════════════════ */
+let audioCtx = null, spinTickId = null;
+
+function ctx() {
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) audioCtx = new AC();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function tone(freq, dur, type = 'sine', vol = 0.25, delay = 0) {
+  if (muted) return;
+  const c = ctx(); if (!c) return;
+  const osc = c.createOscillator(), gain = c.createGain(), t0 = c.currentTime + delay;
+  osc.connect(gain); gain.connect(c.destination);
+  osc.type = type; osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(vol, t0);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+  osc.start(t0); osc.stop(t0 + dur + 0.01);
+}
+
+function noiseTick() {
+  if (muted) return;
+  const c = ctx(); if (!c) return;
+  const buf = c.createBuffer(1, c.sampleRate * 0.025, c.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = c.createBufferSource(), gain = c.createGain();
+  const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1800;
+  src.buffer = buf; src.connect(f); f.connect(gain); gain.connect(c.destination);
+  gain.gain.setValueAtTime(0.06, c.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.025);
+  src.start(); src.stop(c.currentTime + 0.03);
+}
+
+function sndClick()     { tone(700, 0.05, 'square', 0.1); }
+function sndSpinStart() {
+  [180,230,290].forEach((f,i) => tone(f, 0.07, 'sawtooth', 0.16, i*0.04));
+  spinTickId = setInterval(() => noiseTick(), turbo ? 30 : 55);
+}
+function sndSpinStop()  {
+  if (spinTickId) { clearInterval(spinTickId); spinTickId = null; }
+  tone(110, 0.16, 'sine', 0.4); tone(70, 0.1, 'sine', 0.25, 0.1);
+}
+function sndCoin()      { tone(1400, 0.07, 'sine', 0.2); tone(1800, 0.05, 'sine', 0.1, 0.04); }
+
+function sndWin(amt) {
+  if (amt >= 600) {
+    [523,659,784,1047,1319].forEach((f,i) => tone(f, 0.26, 'sine', 0.32, i*0.1));
+    for (let i=0; i<8; i++) setTimeout(() => sndCoin(), 60+i*70);
+  } else {
+    [523,659,784,1047].forEach((f,i) => tone(f, 0.22, 'sine', 0.3, i*0.11));
+    for (let i=0; i<4; i++) setTimeout(() => sndCoin(), 50+i*90);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════════════════ */
+function doLogin() {
+  const email = document.getElementById('lg-email').value.trim();
+  const pass  = document.getElementById('lg-pass').value;
+  if (!email) { document.getElementById('lg-email').style.borderColor='#f87171'; setTimeout(()=>document.getElementById('lg-email').style.borderColor='',1200); return; }
+  if (!pass)  { document.getElementById('lg-pass').style.borderColor='#f87171';  setTimeout(()=>document.getElementById('lg-pass').style.borderColor='',1200);  return; }
+  sndClick();
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  setTimeout(() => {
+    btn.disabled = false; btn.textContent = 'Entrar';
+    const username = email.split('@')[0] || email;
+    state.user  = username.charAt(0).toUpperCase() + username.slice(1);
+    state.email = email;
+    state.logged = true;
+    state.balance = BONUS_START;
+    state.round = 0; state.sessionGain = 0; state.history = [];
+    saveState();
+    showBonusScreen();
+  }, 2000);
+}
+
+function showBonusScreen() {
+  document.getElementById('bonus-username').textContent = state.user;
+  document.getElementById('bonus-display').textContent  = formatNum(state.balance);
+  showScreen('screen-bonus');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BONUS → APP
+══════════════════════════════════════════════════════════════ */
+function goToApp() {
+  sndClick();
+  setupAppUI();
+  showScreen('screen-app');
+}
+
+function setupAppUI() {
+  const u = state.user;
+  document.getElementById('app-avatar').textContent   = u.charAt(0).toUpperCase();
+  document.getElementById('app-username').textContent = u;
+  document.getElementById('app-id').textContent       = 'ID: #' + Math.floor(10000 + Math.random()*89999);
+  document.getElementById('cfg-user').textContent     = u;
+  document.getElementById('cfg-email').textContent    = state.email;
+  buildGrid();
+  updateUI();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRID
+══════════════════════════════════════════════════════════════ */
+function buildGrid() {
+  const grid = document.getElementById('slot-grid');
+  grid.innerHTML = ''; cells = [];
+  ['🐯','💰','🌕','🧧','🐯','🧧','💰','🌕','🧧'].forEach((sym, i) => {
+    const div = document.createElement('div');
+    div.className = 'slot-cell'; div.id = 'g2c' + i; div.textContent = sym;
+    grid.appendChild(div); cells.push(div);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UI UPDATE
+══════════════════════════════════════════════════════════════ */
+function formatNum(n) {
+  return n.toLocaleString('pt-BR');
+}
+
+function updateUI() {
+  const bal = state.balance;
+  const fmt = formatNum(bal) + ' MT';
+  document.getElementById('hdr-bal').textContent = fmt;
+  document.getElementById('st-bal').textContent  = fmt;
+  document.getElementById('st-win').textContent  = formatNum(state.sessionGain) + ' MT';
+  document.getElementById('bal-big').textContent = fmt;
+  document.getElementById('bal-bonus-note').textContent = 'Bônus inicial: ' + formatNum(BONUS_START) + ' MT';
+
+  // Rodadas
+  const r = state.round;
+  document.getElementById('round-label').textContent = r >= 20 ? 'CONCLUÍDO' : 'RODADA ' + r;
+  document.getElementById('round-of').textContent    = r + '/20';
+  document.getElementById('round-fill').style.width  = (r / 20 * 100) + '%';
+  document.getElementById('cfg-rounds').textContent  = r + ' / 20';
+
+  // Saque
+  const pct = Math.min(100, (bal / 10000) * 100).toFixed(1);
+  document.getElementById('saque-fill').style.width    = pct + '%';
+  document.getElementById('saque-current').textContent = formatNum(bal) + ' MT';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GIRAR
+══════════════════════════════════════════════════════════════ */
+function girar() {
+  if (spinning || state.round >= 20) return;
+  sndClick(); spinning = true;
+  const btn = document.getElementById('btn-spin');
+  btn.disabled = true; btn.textContent = '...'; btn.style.animation = 'none';
+  cells.forEach(c => c.classList.remove('win'));
+
+  const preset = PRESETS[state.round];
+  const spinMs = turbo ? 320 : 1100, steps = turbo ? 6 : 22;
+  sndSpinStart();
+
+  let step = 0;
+  const tick = setInterval(() => {
+    cells.forEach(c => { c.textContent = SYMS[Math.floor(Math.random() * SYMS.length)]; });
+    if (++step >= steps) { clearInterval(tick); applyResult(preset); }
+  }, spinMs / steps);
+}
+
+function applyResult(preset) {
+  sndSpinStop();
+  preset.cells.forEach((sym, i) => { cells[i].textContent = sym; });
+
+  state.round++;
+  state.balance += preset.d;
+  if (preset.d > 0) state.sessionGain += preset.d;
+
+  // Histórico
+  state.history.unshift({
+    type: preset.d > 0 ? 'win' : 'loss',
+    amount: Math.abs(preset.d),
+    balance: state.balance,
+    round: state.round
+  });
+
+  saveState();
+  updateUI();
+  renderHistory();
+
+  if (preset.d > 0 && preset.line) {
+    preset.line.forEach(i => cells[i].classList.add('win'));
+    setTimeout(() => { sndWin(preset.d); showWin(preset.d, cells[preset.line[0]].textContent); }, 450);
+  } else {
+    finishSpin();
+  }
+
+  if (state.round >= 20) {
+    const btn = document.getElementById('btn-spin');
+    btn.textContent = 'FIM'; btn.disabled = true;
+    stopAuto();
+  }
+}
+
+function finishSpin() {
+  spinning = false;
+  const btn = document.getElementById('btn-spin');
+  if (state.round >= 20) { btn.textContent = 'FIM'; btn.disabled = true; stopAuto(); return; }
+  btn.disabled = false; btn.textContent = 'GIRAR'; btn.style.animation = '';
+  if (auto) autoTimer = setTimeout(girar, turbo ? 250 : 700);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WIN OVERLAY
+══════════════════════════════════════════════════════════════ */
+function showWin(amt, sym) {
+  document.getElementById('wc-syms').textContent = sym + sym + sym;
+  document.getElementById('wc-amt').textContent  = '+' + formatNum(amt);
+  document.getElementById('win-overlay').classList.add('show');
+}
+
+function closeWin() {
+  sndClick();
+  document.getElementById('win-overlay').classList.remove('show');
+  finishSpin();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HISTÓRIA
+══════════════════════════════════════════════════════════════ */
+function renderHistory() {
+  const list = document.getElementById('tx-list');
+  if (!state.history.length) { list.innerHTML = '<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:20px 0;">Nenhuma transação ainda</p>'; return; }
+  list.innerHTML = state.history.slice(0, 20).map(tx => `
+    <div class="tx-row">
+      <div class="tx-left">
+        <div class="tx-icon ${tx.type}">${tx.type === 'win' ? '🏆' : '🎰'}</div>
+        <div>
+          <div class="tx-desc">${tx.type === 'win' ? 'Ganhou' : 'Sem ganho'} — Rodada ${tx.round}</div>
+          <div class="tx-round">Saldo: ${formatNum(tx.balance)} MT</div>
+        </div>
+      </div>
+      <div class="tx-amount ${tx.type}">${tx.type === 'win' ? '+' : ''}${tx.type === 'win' ? formatNum(tx.amount) + ' MT' : '—'}</div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════════════════════ */
+function switchTab(name, btn) {
+  sndClick();
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CONTROLES
+══════════════════════════════════════════════════════════════ */
+function toggleTurbo() {
+  sndClick(); turbo = !turbo;
+  document.getElementById('btn-turbo').classList.toggle('on', turbo);
+  document.getElementById('tog-turbo').classList.toggle('on', turbo);
+}
+function toggleTurboConfig() { toggleTurbo(); }
+
+function toggleAuto() {
+  sndClick(); auto = !auto;
+  document.getElementById('btn-auto').classList.toggle('on', auto);
+  if (auto && !spinning && state.round < 20) girar();
+  else if (!auto) stopAuto();
+}
+
+function stopAuto() {
+  auto = false;
+  document.getElementById('btn-auto').classList.remove('on');
+  clearTimeout(autoTimer);
+}
+
+function toggleSound() {
+  muted = !muted;
+  document.getElementById('tog-sound').classList.toggle('on', !muted);
+  if (!muted) sndClick();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LOGOUT
+══════════════════════════════════════════════════════════════ */
+function doLogout() {
+  if (!confirm('Tem a certeza que quer terminar a sessão?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = { logged:false, user:'', email:'', balance:BONUS_START, round:0, sessionGain:0, history:[] };
+  showScreen('screen-login');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   INIT — restaurar sessão ou mostrar login
+══════════════════════════════════════════════════════════════ */
+(function init() {
+  if (loadState()) {
+    setupAppUI();
+    renderHistory();
+    showScreen('screen-app');
+  }
+  // else: login screen already active
+})();
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWin(); });
+</script>
+</body>
+</html>
