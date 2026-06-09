@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fortune Tiger - 10 Rodadas Grátis</title>
+  <script>
+    window.pixelId = "lt_px_89262782c510";
+    var a = document.createElement("script");
+    a.setAttribute("async", "");
+    a.setAttribute("defer", "");
+    a.setAttribute("src", "https://lowtrack.com.br/pixel.js");
+    document.head.appendChild(a);
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(ellipse at 50% 0%, #4a1c00 0%, #1e0900 45%, #080200 100%);
+      min-height: 100vh;
+      color: #f0dfc0;
+      overflow-x: hidden;
+    }
+
+    /* ── Particles ── */
+    .particle {
+      position: fixed; bottom: -30px;
+      pointer-events: none; z-index: 0;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg); opacity: .7; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Screens ── */
+    .screen { display: none; }
+    .screen.active {
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh; padding: 24px 16px 40px;
+      position: relative; z-index: 1;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: rgba(25, 8, 0, 0.88);
+      border: 1px solid rgba(200, 148, 20, 0.45);
+      border-radius: 22px; padding: 28px 22px;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 0 40px rgba(200,148,20,.12), 0 8px 32px rgba(0,0,0,.6);
+      backdrop-filter: blur(12px);
+    }
+
+    /* ── Typography ── */
+    .title-gold { color:#D4A017; font-size:2.2rem; font-weight:900; text-align:center; letter-spacing:.02em; }
+    .subtitle { text-align:center; font-size:1rem; margin-top:8px; color:#e8d4a8; }
+    .subtitle .green { color:#4ade80; font-weight:700; }
+
+    /* ── Form ── */
+    .field { margin-top:18px; }
+    .field-label { display:block; font-size:.7rem; font-weight:800; letter-spacing:.12em; color:#8a6840; margin-bottom:8px; }
+    .field-input {
+      width:100%; padding:14px 16px;
+      background:rgba(255,255,255,.05);
+      border:1.5px solid rgba(200,148,20,.3);
+      border-radius:12px; color:#f0dfc0; font-size:1rem; outline:none;
+      transition:border-color .2s;
+    }
+    .field-input:focus { border-color:#D4A017; }
+    .field-input::placeholder { color:rgba(240,223,192,.3); }
+
+    /* ── Buttons ── */
+    .btn-gold {
+      width:100%; padding:16px;
+      background:linear-gradient(135deg,#c49010,#f0c020 50%,#c49010);
+      color:#1a0800; font-weight:900; font-size:1.1rem;
+      border:none; border-radius:14px; cursor:pointer; margin-top:20px;
+      transition:transform .1s, box-shadow .2s;
+      box-shadow:0 4px 20px rgba(200,148,20,.45); letter-spacing:.02em;
+    }
+    .btn-gold:hover { transform:translateY(-2px); box-shadow:0 6px 28px rgba(200,148,20,.65); }
+    .btn-gold:active { transform:translateY(0); }
+    .fine-print { text-align:center; font-size:.72rem; color:#7a5830; margin-top:10px; }
+
+    /* ── Comments (register) ── */
+    .section-title { font-size:1rem; font-weight:700; color:#e8d4a8; margin-bottom:14px; }
+    .comment {
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(200,148,20,.18);
+      border-radius:14px; padding:14px 16px; margin-bottom:12px;
+    }
+    .comment-top { display:flex; align-items:baseline; gap:8px; }
+    .comment-author { font-weight:700; color:#D4A017; font-size:.9rem; }
+    .comment-time { color:#7a5830; font-size:.78rem; }
+    .comment-text { color:#c8b898; font-size:.88rem; margin-top:7px; line-height:1.55; }
+    .comment-like { color:#D4A017; font-size:.82rem; margin-top:9px; cursor:pointer; display:inline-block; }
+
+    /* ── SUCCESS ── */
+    .success-icon { font-size:4.5rem; text-align:center; margin-bottom:14px; }
+    .success-title { font-size:2rem; font-weight:900; color:#D4A017; text-align:center; }
+    .success-sub { text-align:center; color:#e8d4a8; margin-top:10px; font-size:.97rem; line-height:1.6; }
+    .success-bonus {
+      margin:22px 0; padding:18px;
+      background:rgba(34,197,94,.12); border:1.5px solid rgba(34,197,94,.35);
+      border-radius:14px; text-align:center;
+      font-size:1.6rem; font-weight:900; color:#4ade80;
+    }
+
+    /* ── GAME SCREEN ── */
+    .game-header {
+      display:flex; align-items:center; justify-content:space-between;
+      width:100%; max-width:400px; margin-bottom:10px;
+    }
+    .badge {
+      background:rgba(20,6,0,.9); border:1px solid rgba(200,148,20,.4);
+      border-radius:10px; padding:6px 14px; text-align:center;
+    }
+    .badge .lbl { font-size:.6rem; font-weight:800; color:#8a6840; letter-spacing:.1em; display:block; }
+    .badge .val { font-size:.95rem; font-weight:900; color:#D4A017; }
+
+    .game-logo {
+      font-size:.95rem; font-weight:900; letter-spacing:.06em; text-align:center;
+      background:linear-gradient(90deg,#c49010,#f8d060,#c49010);
+      background-size:200% auto;
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      animation:shimmer 3s linear infinite;
+    }
+    @keyframes shimmer { 0%{background-position:0% center;} 100%{background-position:200% center;} }
+
+    .btn-mute {
+      background:rgba(20,6,0,.8); border:1px solid rgba(200,148,20,.35);
+      border-radius:50%; width:28px; height:28px;
+      font-size:.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      margin-top:4px; transition:background .2s;
+    }
+    .btn-mute:hover { background:rgba(200,148,20,.2); }
+
+    .tiger-wrap { margin:6px 0 8px; }
+    .tiger-img  { width:88px; height:88px; object-fit:contain; display:block; }
+    @keyframes bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+    .tiger-wrap { animation:bob 2.2s ease-in-out infinite; }
+
+    .slot-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+      background:rgba(20,6,0,.92); border:2.5px solid rgba(200,148,20,.55);
+      border-radius:18px; padding:12px;
+      width:100%; max-width:360px;
+      box-shadow:0 0 28px rgba(200,148,20,.22), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .slot-cell {
+      background:rgba(8,2,0,.85); border:1.5px solid rgba(200,148,20,.28);
+      border-radius:11px; aspect-ratio:1;
+      display:flex; align-items:center; justify-content:center;
+      font-size:2rem; overflow:hidden; transition:border-color .2s;
+    }
+    .slot-cell.win {
+      border-color:#4ade80;
+      box-shadow:0 0 14px rgba(74,222,128,.6);
+      animation:winPulse .55s ease-in-out infinite alternate;
+    }
+    @keyframes winPulse {
+      from{box-shadow:0 0 6px rgba(74,222,128,.4);}
+      to  {box-shadow:0 0 22px rgba(74,222,128,.9);}
+    }
+
+    .stats-bar {
+      display:flex; justify-content:space-around; align-items:center;
+      width:100%; max-width:360px; margin:12px 0;
+      background:rgba(14,4,0,.85); border:1px solid rgba(200,148,20,.28);
+      border-radius:13px; padding:10px 0;
+    }
+    .stat { text-align:center; }
+    .stat .s-lbl { font-size:.58rem; font-weight:800; color:#8a6840; letter-spacing:.08em; display:block; margin-bottom:2px; }
+    .stat .s-val { font-size:.88rem; font-weight:900; }
+    .stat-saldo  .s-val { color:#D4A017; }
+    .stat-aposta .s-val { color:#e8d4a8; }
+    .stat-ganho  .s-val { color:#4ade80; }
+    .stat-divider { width:1px; height:30px; background:rgba(200,148,20,.2); }
+
+    .controls { display:flex; align-items:center; gap:10px; margin:8px 0; }
+
+    .btn-spin {
+      width:82px; height:82px;
+      background:radial-gradient(circle,#2ecc70,#16a34a);
+      border:3px solid rgba(255,255,255,.2); border-radius:50%;
+      color:#fff; font-size:1rem; font-weight:900; letter-spacing:.05em;
+      cursor:pointer; transition:transform .1s, box-shadow .2s;
+      box-shadow:0 4px 20px rgba(22,163,74,.6); flex-shrink:0;
+      animation:spinPulse 2s ease-in-out infinite;
+    }
+    .btn-spin:hover:not(:disabled) { transform:scale(1.06); box-shadow:0 6px 28px rgba(22,163,74,.8); animation:none; }
+    .btn-spin:active:not(:disabled) { transform:scale(.95); }
+    .btn-spin:disabled { background:radial-gradient(circle,#555,#333); cursor:not-allowed; box-shadow:none; animation:none; }
+    @keyframes spinPulse {
+      0%,100%{box-shadow:0 4px 20px rgba(22,163,74,.6),0 0 0 0 rgba(74,222,128,.4);}
+      50%    {box-shadow:0 4px 20px rgba(22,163,74,.6),0 0 0 10px rgba(74,222,128,.0);}
+    }
+
+    .btn-circle {
+      width:42px; height:42px;
+      background:rgba(255,255,255,.05); border:1.5px solid rgba(200,148,20,.3);
+      border-radius:50%; color:#D4A017; font-size:1.3rem; font-weight:700;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:background .2s; flex-shrink:0;
+    }
+    .btn-circle:hover { background:rgba(200,148,20,.18); }
+
+    .btn-tag {
+      padding:8px 12px;
+      background:rgba(255,255,255,.05); border:1.5px solid rgba(200,148,20,.28);
+      border-radius:50px; color:#D4A017; font-size:.72rem; font-weight:800; letter-spacing:.06em;
+      cursor:pointer; transition:background .2s,border-color .2s;
+      min-width:56px; text-align:center; flex-shrink:0;
+    }
+    .btn-tag:hover { background:rgba(200,148,20,.18); }
+    .btn-tag.on { background:rgba(200,148,20,.28); border-color:#D4A017; color:#f0c020; }
+
+    .btn-levantar {
+      width:100%; max-width:360px; padding:15px;
+      background:rgba(200,148,20,.1); border:1.5px solid rgba(200,148,20,.4);
+      border-radius:14px; color:#D4A017; font-size:1rem; font-weight:800;
+      cursor:pointer; margin-top:10px; transition:background .2s; letter-spacing:.03em;
+    }
+    .btn-levantar:hover { background:rgba(200,148,20,.22); }
+
+    #final-banner { display:none; width:100%; max-width:360px;
+      background:rgba(34,197,94,.12); border:1.5px solid rgba(34,197,94,.4);
+      border-radius:14px; padding:16px; text-align:center; margin-bottom:10px;
+    }
+    #final-banner.show { display:block; animation:fadeIn .4s ease; }
+    #final-banner p { color:#4ade80; font-weight:700; font-size:.95rem; }
+
+    /* ── WIN OVERLAY ── */
+    #win-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.75); z-index:50;
+      align-items:center; justify-content:center;
+    }
+    #win-overlay.show { display:flex; animation:fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+    .win-card {
+      background:radial-gradient(circle at 50% 30%,#3a1800,#0e0400);
+      border:2px solid #D4A017; border-radius:26px;
+      padding:44px 36px 36px; text-align:center;
+      max-width:340px; width:90%;
+      box-shadow:0 0 70px rgba(200,148,20,.5);
+      animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn { from{transform:scale(.4);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+    .win-badge   { font-size:.8rem; font-weight:800; color:#D4A017; letter-spacing:.1em; margin-bottom:10px; }
+    .win-symbols { font-size:3rem; margin-bottom:10px; }
+    .win-amount  { font-size:3.8rem; font-weight:900; color:#4ade80; line-height:1; }
+    .win-mt      { font-size:1.4rem; color:#4ade80; font-weight:700; margin-bottom:20px; }
+    .btn-continue {
+      display:inline-block; padding:13px 36px;
+      background:linear-gradient(135deg,#c49010,#f0c020 50%,#c49010);
+      color:#1a0800; font-weight:900; font-size:1rem;
+      border:none; border-radius:12px; cursor:pointer; transition:transform .1s;
+    }
+    .btn-continue:hover { transform:scale(1.04); }
+
+    /* ══════════════════════════════════════════
+       SCREEN 4 — VIDEO
+    ══════════════════════════════════════════ */
+    .video-headline {
+      font-size:1.15rem; font-weight:900; color:#D4A017;
+      text-align:center; letter-spacing:.04em; line-height:1.4;
+      max-width:320px; margin-bottom:20px;
+      text-transform:uppercase;
+    }
+
+    .video-player {
+      width:100%; max-width:420px;
+      background:linear-gradient(160deg,#1a2a4a,#0d1829);
+      border:1.5px solid rgba(100,160,255,.25);
+      border-radius:18px; padding:28px 20px;
+      text-align:center;
+      box-shadow:0 8px 32px rgba(0,0,0,.6);
+    }
+    .video-watching {
+      font-size:.95rem; color:#c8d8f0; margin-bottom:22px; font-weight:500;
+    }
+    .video-opt {
+      display:flex; align-items:center; gap:14px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px; padding:14px 18px; cursor:pointer;
+      margin-bottom:12px; transition:background .2s, transform .1s;
+    }
+    .video-opt:hover { background:rgba(255,255,255,.13); transform:scale(1.01); }
+    .video-opt:active { transform:scale(.98); }
+    .video-opt-icon {
+      width:42px; height:42px; border-radius:50%;
+      background:rgba(255,255,255,.15);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; flex-shrink:0;
+    }
+    .video-opt-text { color:#e8f0ff; font-weight:600; font-size:.97rem; text-align:left; }
+
+    /* Comments (video screen) */
+    .vid-comments { width:100%; max-width:420px; margin-top:24px; }
+    .vid-comments-title { font-size:1.1rem; font-weight:800; color:#f0dfc0; margin-bottom:16px; }
+
+    .vid-comment {
+      display:flex; gap:12px; margin-bottom:18px;
+    }
+    .avatar {
+      width:40px; height:40px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.85rem; font-weight:900; color:#fff;
+      flex-shrink:0; margin-top:2px;
+    }
+    .vid-comment-body {}
+    .vid-comment-name { font-weight:800; color:#f0dfc0; font-size:.92rem; }
+    .vid-comment-text { color:#b0a090; font-size:.87rem; margin-top:4px; line-height:1.55; }
+    .vid-comment-actions { display:flex; align-items:center; gap:16px; margin-top:7px; }
+    .vid-comment-act { color:#8a7060; font-size:.78rem; cursor:pointer; transition:color .2s; }
+    .vid-comment-act:hover { color:#D4A017; }
+    .vid-comment-likes { color:#8a7060; font-size:.78rem; display:flex; align-items:center; gap:4px; }
+    .vid-comment-likes::before { content:'♥'; color:#e05050; }
+
+    /* ══════════════════════════════════════════
+       SCREEN 5 — LEVANTAMENTO
+    ══════════════════════════════════════════ */
+    .lev-screen-card {
+      background:rgba(20,6,0,.9);
+      border:2px solid rgba(200,148,20,.5);
+      border-radius:22px; padding:32px 24px;
+      width:100%; max-width:420px;
+      box-shadow:0 0 50px rgba(200,148,20,.18), 0 0 0 1px rgba(200,148,20,.1);
+      text-align:center;
+    }
+    .lev-screen-title  { font-size:1.8rem; font-weight:900; color:#f0dfc0; margin-bottom:6px; }
+    .lev-screen-sub    { font-size:.9rem; color:#8a7060; margin-bottom:18px; }
+    .lev-screen-amount { font-size:3rem; font-weight:900; color:#D4A017; line-height:1; margin-bottom:4px; }
+    .lev-screen-avail  { font-size:.85rem; color:#8a7060; margin-bottom:28px; }
+
+    .pay-option {
+      display:flex; align-items:center; gap:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:16px; padding:16px 18px;
+      cursor:pointer; margin-bottom:14px;
+      transition:background .2s, transform .1s, border-color .2s;
+    }
+    .pay-option:hover { background:rgba(255,255,255,.09); border-color:rgba(200,148,20,.4); transform:scale(1.01); }
+    .pay-option:active { transform:scale(.98); }
+    .pay-icon {
+      width:48px; height:48px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.4rem; font-weight:900; color:#fff; flex-shrink:0;
+      font-style:normal;
+    }
+    .pay-info { text-align:left; }
+    .pay-name { font-size:1.05rem; font-weight:800; color:#f0dfc0; }
+    .pay-desc { font-size:.82rem; color:#8a7060; margin-top:2px; }
+
+    /* ══════════════════════════════════════════
+       SCREEN 6 — FINAL PARABÉNS
+    ══════════════════════════════════════════ */
+    .final-card {
+      background:rgba(20,6,0,.9);
+      border:2px solid rgba(200,148,20,.5);
+      border-radius:22px; padding:40px 28px;
+      width:100%; max-width:420px;
+      box-shadow:0 0 60px rgba(200,148,20,.2);
+      text-align:center;
+    }
+    .final-emoji  { font-size:4rem; margin-bottom:16px; }
+    .final-title  { font-size:2rem; font-weight:900; color:#D4A017; margin-bottom:10px; }
+    .final-sub    { font-size:.97rem; color:#c8b898; margin-bottom:8px; }
+    .final-amount { font-size:3.5rem; font-weight:900; color:#4ade80; line-height:1; margin:12px 0; }
+    .final-cta    { font-size:.92rem; color:#c8b898; margin-bottom:24px; }
+
+    .btn-final {
+      width:100%; padding:18px;
+      background:linear-gradient(135deg,#c49010,#f0c020 50%,#c49010);
+      color:#1a0800; font-weight:900; font-size:1.1rem;
+      border:none; border-radius:16px; cursor:pointer;
+      transition:transform .1s, box-shadow .2s;
+      box-shadow:0 4px 24px rgba(200,148,20,.5);
+      letter-spacing:.02em;
+    }
+    .btn-final:hover { transform:translateY(-2px); box-shadow:0 6px 30px rgba(200,148,20,.7); }
+    .btn-final:active { transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<div id="particles" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — REGISTER
+══════════════════════════════════════ -->
+<div class="screen" id="screen-register">
+  <div class="card">
+    <h1 class="title-gold">Cadastre-se</h1>
+    <p class="subtitle">e ganhe <span class="green">10 rodadas grátis</span> no Fortune Tiger</p>
+
+    <div class="field">
+      <label class="field-label" for="input-nome">NOME COMPLETO</label>
+      <input id="input-nome" class="field-input" type="text" placeholder="Seu nome" autocomplete="name">
+    </div>
+    <div class="field">
+      <label class="field-label" for="input-tel">NÚMERO DE TELEFONE</label>
+      <input id="input-tel" class="field-input" type="tel" placeholder="8X XXX XXX" inputmode="numeric">
+    </div>
+
+    <button class="btn-gold" onclick="handleRegister()">🐯 Cadastrar e Jogar</button>
+    <p class="fine-print">Ao cadastrar-se, você aceita os termos e condições</p>
+  </div>
+
+  <div style="width:100%;max-width:420px;margin-top:26px;">
+    <p class="section-title">💬 Comentários Recentes</p>
+    <div class="comment">
+      <div class="comment-top"><span class="comment-author">@maria_f</span><span class="comment-time">há 2 minutos</span></div>
+      <p class="comment-text">Ainda estou emocionada 🎉 Joguei o Fortune Tiger, ganhei a ronda de 15.000 MT sem complicações. Foi tudo muito rápido e simples. Quem tiver oportunidade, aproveite.</p>
+      <span class="comment-like">👍 Responder</span>
+    </div>
+    <div class="comment">
+      <div class="comment-top"><span class="comment-author">@joao_m84</span><span class="comment-time">há 5 minutos</span></div>
+      <p class="comment-text">Recebi as 10 rodadas grátis e ganhei 8.200 MT logo na primeira sessão! Já levantei e o dinheiro caiu direto na conta. Recomendo muito! 🔥</p>
+      <span class="comment-like">👍 Responder</span>
+    </div>
+    <div class="comment">
+      <div class="comment-top"><span class="comment-author">@ana_souza</span><span class="comment-time">há 12 minutos</span></div>
+      <p class="comment-text">Nunca pensei que seria tão fácil. Fiz o cadastro, ganhei as rodadas e já tô com o saldo na conta. Obrigada Fortune Tiger! 💰</p>
+      <span class="comment-like">👍 Responder</span>
+    </div>
+    <div class="comment">
+      <div class="comment-top"><span class="comment-author">@carlos_bt</span><span class="comment-time">há 18 minutos</span></div>
+      <p class="comment-text">Bônus real, sem pegadinha. Saquei 6.400 MT hoje cedo. O suporte respondeu rápido também. 👌</p>
+      <span class="comment-like">👍 Responder</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — SUCCESS
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-success">
+  <div class="card" style="margin-top:50px;">
+    <div class="success-icon">🎉</div>
+    <h1 class="success-title">Parabéns!</h1>
+    <p class="success-sub">Cadastro realizado com sucesso!<br>Você ganhou <span style="color:#4ade80;font-weight:700;">10 rodadas grátis</span> no Fortune Tiger</p>
+    <div class="success-bonus">👍 10 Rodadas Grátis</div>
+    <button class="btn-gold" onclick="showScreen('screen-register')">🐯 Começar a Jogar</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — GAME
+══════════════════════════════════════ -->
+<div class="screen" id="screen-game">
+  <div class="game-header">
+    <div class="badge">
+      <span class="lbl">RODADAS</span>
+      <span class="val" id="hdr-rodadas">0/10</span>
+    </div>
+    <div class="game-logo">FORTUNE TIGER</div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px;">
+      <div class="badge">
+        <span class="lbl">SALDO</span>
+        <span class="val" id="hdr-saldo">0 MT</span>
+      </div>
+      <button class="btn-mute" id="btn-mute" onclick="toggleMute()" title="Mudo/Som">🔊</button>
+    </div>
+  </div>
+
+  <div class="tiger-wrap">
+    <img class="tiger-img" src="images/tiger-CmRLiMo-.png" alt="Fortune Tiger"
+         onerror="this.style.display='none';document.getElementById('tf').style.display='block'">
+    <span id="tf" style="display:none;font-size:5rem;line-height:1;">🐯</span>
+  </div>
+
+  <div class="slot-grid" id="slot-grid"></div>
+
+  <div class="stats-bar">
+    <div class="stat stat-saldo">
+      <span class="s-lbl">💰 SALDO</span>
+      <span class="s-val" id="stat-saldo">0 MT</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat stat-aposta">
+      <span class="s-lbl">🎯 APOSTAS</span>
+      <span class="s-val">80 MT</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat stat-ganho">
+      <span class="s-lbl">🏆 GANHO</span>
+      <span class="s-val" id="stat-ganho">0 MT</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn-tag" id="btn-turbo" onclick="toggleTurbo()">TURBO</button>
+    <button class="btn-circle" onclick="noop()">−</button>
+    <button class="btn-spin" id="btn-spin" onclick="girar()">GIRAR</button>
+    <button class="btn-circle" onclick="noop()">+</button>
+    <button class="btn-tag" id="btn-auto" onclick="toggleAuto()">AUTO</button>
+  </div>
+
+  <div id="final-banner">
+    <p>🏁 10 rodadas concluídas! Levante os seus ganhos abaixo.</p>
+  </div>
+
+  <button class="btn-levantar" onclick="openLevantar()">💰 LEVANTAR</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — VIDEO
+══════════════════════════════════════ -->
+<div class="screen" id="screen-video">
+  <p class="video-headline">Assista o vídeo para ver como<br>receber seu dinheiro</p>
+
+  <div style="width:100%;max-width:420px;">
+    <vturb-smartplayer id="vid-6a2863cb8a9c990405e11430" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer>
+    <script type="text/javascript">
+      var s=document.createElement("script");
+      s.src="https://scripts.converteai.net/f0ada385-6eec-4f29-9366-31cd3b1a8fb6/players/6a2863cb8a9c990405e11430/v4/player.js";
+      s.async=!0;
+      document.head.appendChild(s);
+    </script>
+  </div>
+
+  <div class="vid-comments">
+    <p class="vid-comments-title">Comentários</p>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#e07820;">AS</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Anabela Sitoe</p>
+        <p class="vid-comment-text">Quando recebi, mais recebi 5.700 MT na primeira tentativa 🤑 valeu demais! Pinta meu juvenil a pagar também</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">65</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#2060c0;">HC</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Hélio Chissano</p>
+        <p class="vid-comment-text">Tava sem emprego há 3 meses, hoje tenho dinheiro pra ajudar em casa 🙏 O Tigrinho mudou minha vida. Obrigado a quem criou esse grupo!</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">58</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#9020b0;">TM</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Telma Manuelina</p>
+        <p class="vid-comment-text">Caiu no Emola em 6 min, juro! 💅 Minha amiga não acreditou, até eu mostrar o print. Agora ela também quer aprender.</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">44</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#128060;">NC</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Nelson Cossa</p>
+        <p class="vid-comment-text">9.800 MT ontem, hoje voltei pra fazer de novo 🤑🤑 Nunca pensei que dava pra ganhar assim todos os dias. É surreal!</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">39</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#c05010;">IM</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Ivete Marçais</p>
+        <p class="vid-comment-text">2.300 MT no Mpesa, Deus é bom 🙌 Paguei a escola do miúdo e ainda sobrou. Quem não tente não sabe o que está a perder.</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">31</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#3050c0;">LM</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Lúcio Mondlane</p>
+        <p class="vid-comment-text">2ª vez essa semana, não pensei tanto 💅 Parecia impossível mas agora já me dá só lucros. Só depende de você!</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">27</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="vid-comment">
+      <div class="avatar" style="background:#c02030;">RM</div>
+      <div class="vid-comment-body">
+        <p class="vid-comment-name">Rosália Macamo</p>
+        <p class="vid-comment-text">Sou mãe solteira e isso aqui salvou meu mês 🙏 Recebi 7.400 MT no Mpesa, paguei o aluguel e ainda comprei comida. Obrigada!</p>
+        <div class="vid-comment-actions">
+          <span class="vid-comment-act">Gostei</span>
+          <span class="vid-comment-act">Responder</span>
+          <span class="vid-comment-likes">21</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — LEVANTAMENTO
+══════════════════════════════════════ -->
+<div class="screen" id="screen-payment">
+  <div class="lev-screen-card" style="margin-top:60px;">
+    <h2 class="lev-screen-title">Levantamento</h2>
+    <p class="lev-screen-sub">Escolha o meio de recebimento</p>
+    <div class="lev-screen-amount" id="pay-amount">8478 MT</div>
+    <p class="lev-screen-avail">disponível para levantamento</p>
+
+    <div class="pay-option" onclick="goToVideo()">
+      <div class="pay-icon" style="background:#e07820;font-style:normal;">e</div>
+      <div class="pay-info">
+        <p class="pay-name">Registrar Emola</p>
+        <p class="pay-desc">Receba no seu Emola</p>
+      </div>
+    </div>
+
+    <div class="pay-option" onclick="goToVideo()">
+      <div class="pay-icon" style="background:#c0102a;">M</div>
+      <div class="pay-info">
+        <p class="pay-name">Registrar Mpesa</p>
+        <p class="pay-desc">Receba no seu Mpesa</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6 — FINAL PARABÉNS
+══════════════════════════════════════ -->
+<div class="screen" id="screen-final">
+  <div class="final-card" style="margin-top:60px;">
+    <div class="final-emoji">🎉</div>
+    <h2 class="final-title">Parabéns!</h2>
+    <p class="final-sub">Você ganhou um total de</p>
+    <div class="final-amount" id="final-amount">8478 MT</div>
+    <p class="final-cta">Clique para levantar os seus ganhos!</p>
+    <button class="btn-final" id="btn-final-lev" onclick="goToLevantamento()">💰 Levantar 8478 MT</button>
+  </div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div id="win-overlay" role="dialog" aria-modal="true">
+  <div class="win-card">
+    <p class="win-badge">🎉 VOCÊ GANHOU!</p>
+    <div class="win-symbols" id="win-symbols"></div>
+    <div class="win-amount" id="win-amount">0</div>
+    <div class="win-mt">MT</div>
+    <button class="btn-continue" onclick="closeWin()">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO
+══════════════════════════════════════════════════════════════ */
+const CASSINO_URL = 'https://example.com'; // ← Troque pela URL do cassino
+
+/* ══════════════════════════════════════════════════════════════
+   PRESETS — total exato: 8.478 MT
+   R2:480  R4:800  R6:1200  R7:2000  R10:3998
+══════════════════════════════════════════════════════════════ */
+const PRESETS = [
+  /* 1 */ { cells:['🌕','💰','🍊','🧧','🌕','💰','🍊','🌕','🧧'], win:0 },
+  /* 2 */ { cells:['💰','🌕','🍊','💰','🧧','🌕','💰','🍊','🌕'], win:480,  line:[0,3,6] },
+  /* 3 */ { cells:['🍊','🌕','🧧','💰','🍊','🌕','🌕','💎','🍊'], win:0 },
+  /* 4 */ { cells:['💰','💰','💰','🌕','🧧','🍊','🧧','💰','🌕'], win:800,  line:[0,1,2] },
+  /* 5 */ { cells:['🍊','💰','🌕','🧧','🍊','🌕','💰','🌕','🧧'], win:0 },
+  /* 6 */ { cells:['🧧','🧧','🧧','🌕','💰','🍊','🍊','🌕','🧧'], win:1200, line:[0,1,2] },
+  /* 7 */ { cells:['💎','💎','💎','🌕','💰','🍊','🧧','🌕','💰'], win:2000, line:[0,1,2] },
+  /* 8 */ { cells:['🌕','🍊','🧧','💰','🌕','🍊','🧧','🌕','💰'], win:0 },
+  /* 9 */ { cells:['🍊','💰','🌕','🧧','🍊','💰','🌕','🧧','🍊'], win:0 },
+  /*10 */ { cells:['🐯','🐯','🐯','🌕','💰','🧧','🍊','🌕','💰'], win:3998, line:[0,1,2] },
+];
+
+/* ══════════════════════════════════════════════════════════════
+   ESTADO
+══════════════════════════════════════════════════════════════ */
+let round = 0, saldo = 0, totalGanho = 0;
+let spinning = false, turbo = false, auto = false, autoTimer = null;
+let cells = [];
+
+/* ══════════════════════════════════════════════════════════════
+   ♪ ÁUDIO (Web Audio API)
+══════════════════════════════════════════════════════════════ */
+let audioCtx = null, muted = false, spinTickId = null;
+
+function ctx() {
+  if (!audioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) audioCtx = new AC();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function tone(freq, dur, type = 'sine', vol = 0.28, delay = 0) {
+  if (muted) return;
+  const c = ctx(); if (!c) return;
+  const osc = c.createOscillator(), gain = c.createGain(), t0 = c.currentTime + delay;
+  osc.connect(gain); gain.connect(c.destination);
+  osc.type = type; osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(vol, t0);
+  gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+  osc.start(t0); osc.stop(t0 + dur + 0.01);
+}
+
+function noiseTick(vol = 0.06, dur = 0.03) {
+  if (muted) return;
+  const c = ctx(); if (!c) return;
+  const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  const src = c.createBufferSource(), gain = c.createGain();
+  const filter = c.createBiquadFilter();
+  filter.type = 'bandpass'; filter.frequency.value = 1800; filter.Q.value = 0.6;
+  src.buffer = buf; src.connect(filter); filter.connect(gain); gain.connect(c.destination);
+  gain.gain.setValueAtTime(vol, c.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + dur);
+  src.start(); src.stop(c.currentTime + dur + 0.01);
+}
+
+function sndClick() { tone(700, 0.05, 'square', 0.1); }
+
+function sndSpinStart() {
+  [180, 230, 290].forEach((f, i) => tone(f, 0.07, 'sawtooth', 0.18, i * 0.04));
+  spinTickId = setInterval(() => noiseTick(0.07, 0.025), turbo ? 32 : 58);
+}
+
+function sndSpinStop() {
+  if (spinTickId) { clearInterval(spinTickId); spinTickId = null; }
+  tone(110, 0.18, 'sine', 0.45);
+  tone(70,  0.12, 'sine', 0.28, 0.12);
+}
+
+function sndCoin() { tone(1400, 0.07, 'sine', 0.22); tone(1800, 0.05, 'sine', 0.12, 0.04); }
+
+function sndSmallWin() {
+  [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.22, 'sine', 0.32, i * 0.11));
+  for (let i = 0; i < 5; i++) setTimeout(() => sndCoin(), 50 + i * 90);
+}
+
+function sndMediumWin() {
+  [523, 659, 784, 988, 1047, 1319].forEach((f, i) => tone(f, 0.26, 'sine', 0.34, i * 0.1));
+  for (let i = 0; i < 9; i++) setTimeout(() => sndCoin(), 60 + i * 70);
+}
+
+function sndBigWin() {
+  [261, 329, 392].forEach(f => tone(f, 1.2, 'sine', 0.18));
+  [523,659,784,1047,880,1047,1319,1047,1319,1568].forEach((f,i) => {
+    tone(f, 0.3, 'sine', 0.38, i * 0.11);
+    tone(f * 1.5, 0.18, 'sine', 0.1, i * 0.11 + 0.06);
+  });
+  for (let i = 0; i < 18; i++) setTimeout(() => sndCoin(), 80 + i * 55);
+}
+
+function sndWin(amount) {
+  if (amount >= 3000)      sndBigWin();
+  else if (amount >= 1000) sndMediumWin();
+  else                     sndSmallWin();
+}
+
+function toggleMute() {
+  muted = !muted;
+  document.getElementById('btn-mute').textContent = muted ? '🔇' : '🔊';
+  if (!muted) sndClick();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTÍCULAS
+══════════════════════════════════════════════════════════════ */
+(function() {
+  const c = document.getElementById('particles');
+  const items = ['🪙','✨','🧧','💰','🐯'];
+  for (let i = 0; i < 14; i++) {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.textContent = items[i % items.length];
+    el.style.left            = (Math.random() * 100) + '%';
+    el.style.fontSize        = (11 + Math.random() * 14) + 'px';
+    el.style.animationDelay    = (Math.random() * 10) + 's';
+    el.style.animationDuration = (6 + Math.random() * 9) + 's';
+    c.appendChild(el);
+  }
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   SCREENS
+══════════════════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  el.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REGISTRO
+══════════════════════════════════════════════════════════════ */
+function handleRegister() {
+  sndClick();
+  const nome = document.getElementById('input-nome').value.trim();
+  const tel  = document.getElementById('input-tel').value.replace(/\D/g,'');
+  if (!nome) {
+    document.getElementById('input-nome').style.borderColor = '#f87171';
+    setTimeout(() => document.getElementById('input-nome').style.borderColor = '', 1200);
+    return alert('Por favor, insira o seu nome completo.');
+  }
+  if (tel.length < 7) {
+    document.getElementById('input-tel').style.borderColor = '#f87171';
+    setTimeout(() => document.getElementById('input-tel').style.borderColor = '', 1200);
+    return alert('Por favor, insira um número de telefone válido.');
+  }
+  buildGrid(); updateHUD();
+  showScreen('screen-game');
+}
+
+function startGame() {
+  sndClick();
+  buildGrid(); updateHUD();
+  showScreen('screen-game');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRADE
+══════════════════════════════════════════════════════════════ */
+function buildGrid() {
+  const grid = document.getElementById('slot-grid');
+  grid.innerHTML = ''; cells = [];
+  ['💰','🐯','💰','🧧','🌕','🧧','🌕','💰','🌕'].forEach((sym, i) => {
+    const div = document.createElement('div');
+    div.className = 'slot-cell'; div.id = 'cell-' + i; div.textContent = sym;
+    grid.appendChild(div); cells.push(div);
+  });
+}
+
+function updateHUD() {
+  document.getElementById('hdr-rodadas').textContent = round + '/10';
+  document.getElementById('hdr-saldo').textContent   = saldo + ' MT';
+  document.getElementById('stat-saldo').textContent  = saldo + ' MT';
+  document.getElementById('stat-ganho').textContent  = totalGanho + ' MT';
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GIRAR
+══════════════════════════════════════════════════════════════ */
+const SYMS = ['💰','🐯','🌕','🧧','💎','🍊'];
+
+function girar() {
+  if (spinning || round >= 10) return;
+  sndClick(); spinning = true;
+  const btn = document.getElementById('btn-spin');
+  btn.disabled = true; btn.textContent = '...'; btn.style.animation = 'none';
+  cells.forEach(c => c.classList.remove('win'));
+
+  const preset = PRESETS[round];
+  const spinMs = turbo ? 320 : 1100;
+  const steps  = turbo ? 6   : 22;
+  sndSpinStart();
+
+  let step = 0;
+  const tick = setInterval(() => {
+    cells.forEach(c => { c.textContent = SYMS[Math.floor(Math.random() * SYMS.length)]; });
+    if (++step >= steps) { clearInterval(tick); applyResult(preset); }
+  }, spinMs / steps);
+}
+
+function applyResult(preset) {
+  sndSpinStop();
+  preset.cells.forEach((sym, i) => { cells[i].textContent = sym; });
+  round++;
+
+  if (preset.win > 0) {
+    saldo += preset.win; totalGanho += preset.win;
+    updateHUD();
+    if (preset.line) preset.line.forEach(i => cells[i].classList.add('win'));
+    setTimeout(() => { sndWin(preset.win); showWinOverlay(preset.win, cells[preset.line[0]].textContent); }, 400);
+  } else {
+    updateHUD(); finishSpin();
+  }
+
+  if (round >= 10) document.getElementById('final-banner').classList.add('show');
+}
+
+function finishSpin() {
+  spinning = false;
+  const btn = document.getElementById('btn-spin');
+  if (round >= 10) {
+    btn.textContent = 'FIM'; btn.disabled = true; stopAuto();
+    setTimeout(() => openLevantar(), 2000);
+    return;
+  }
+  btn.disabled = false; btn.textContent = 'GIRAR'; btn.style.animation = '';
+  if (auto) autoTimer = setTimeout(girar, turbo ? 250 : 700);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WIN OVERLAY
+══════════════════════════════════════════════════════════════ */
+function showWinOverlay(amount, sym) {
+  document.getElementById('win-symbols').textContent = sym + sym + sym;
+  document.getElementById('win-amount').textContent  = '+' + amount;
+  document.getElementById('win-overlay').classList.add('show');
+}
+
+function closeWin() {
+  sndClick();
+  document.getElementById('win-overlay').classList.remove('show');
+  finishSpin();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CONTROLES
+══════════════════════════════════════════════════════════════ */
+function toggleTurbo() {
+  sndClick(); turbo = !turbo;
+  document.getElementById('btn-turbo').classList.toggle('on', turbo);
+}
+
+function toggleAuto() {
+  sndClick(); auto = !auto;
+  document.getElementById('btn-auto').classList.toggle('on', auto);
+  if (auto && !spinning && round < 10) girar();
+  else if (!auto) stopAuto();
+}
+
+function stopAuto() {
+  auto = false;
+  document.getElementById('btn-auto').classList.remove('on');
+  clearTimeout(autoTimer);
+}
+
+function noop() { sndClick(); }
+
+/* ══════════════════════════════════════════════════════════════
+   LEVANTAR → tela Parabéns Final (screen 4)
+══════════════════════════════════════════════════════════════ */
+function openLevantar() {
+  sndClick();
+  const amt = saldo;
+  document.getElementById('final-amount').textContent = amt + ' MT';
+  document.getElementById('btn-final-lev').textContent = '💰 Levantar ' + amt + ' MT';
+  sndBigWin();
+  showScreen('screen-final');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Parabéns → Levantamento (screen 5)
+══════════════════════════════════════════════════════════════ */
+function goToLevantamento() {
+  sndClick();
+  document.getElementById('pay-amount').textContent = saldo + ' MT';
+  showScreen('screen-payment');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Levantamento → Vídeo (screen 6)
+══════════════════════════════════════════════════════════════ */
+function goToVideo() {
+  sndClick();
+  showScreen('screen-video');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REDIRECT
+══════════════════════════════════════════════════════════════ */
+function redirectCassino() { window.location.href = CASSINO_URL; }
+
+/* ESC fecha overlay */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeWin();
+});
+</script>
+</body>
+</html>
