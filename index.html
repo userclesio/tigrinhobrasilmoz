@@ -359,6 +359,49 @@
     .pay-desc { font-size:.82rem; color:#8a7060; margin-top:2px; }
 
     /* ══════════════════════════════════════════
+       SCREEN 5b — FORMULÁRIO MÉTODO
+    ══════════════════════════════════════════ */
+    .method-title {
+      font-size: 1.5rem; font-weight: 900; color: #f0dfc0;
+      text-align: center; margin-bottom: 6px;
+    }
+    .method-subtitle {
+      text-align: center; font-size: .85rem; color: #8a7060; margin-bottom: 24px;
+    }
+
+    /* ══════════════════════════════════════════
+       SCREEN 5c — VERIFICAÇÃO
+    ══════════════════════════════════════════ */
+    .verify-step {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(34,197,94,.15); border: 1.5px solid rgba(34,197,94,.4);
+      border-radius: 50px; padding: 6px 18px;
+      font-size: .82rem; font-weight: 800; color: #4ade80;
+      letter-spacing: .06em; margin-bottom: 18px;
+    }
+    .verify-title {
+      font-size: 1.3rem; font-weight: 900; color: #f0dfc0;
+      text-align: center; margin-bottom: 6px;
+    }
+    .verify-sub {
+      text-align: center; font-size: .88rem; color: #8a7060; margin-bottom: 20px;
+    }
+    .verify-data {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(200,148,20,.25);
+      border-radius: 14px; padding: 16px 18px;
+      margin-bottom: 22px; width: 100%;
+    }
+    .verify-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .verify-row:last-child { border-bottom: none; }
+    .verify-key  { font-size: .82rem; color: #8a7060; font-weight: 600; }
+    .verify-val  { font-size: .88rem; color: #f0dfc0; font-weight: 700; }
+    .verify-val.method-color { color: #D4A017; }
+
+    /* ══════════════════════════════════════════
        SCREEN 6 — FINAL PARABÉNS
     ══════════════════════════════════════════ */
     .final-card {
@@ -626,7 +669,7 @@
     <div class="lev-screen-amount" id="pay-amount">8478 MT</div>
     <p class="lev-screen-avail">disponível para levantamento</p>
 
-    <div class="pay-option" onclick="goToVideo()">
+    <div class="pay-option" onclick="goToMethodForm('Emola')">
       <div class="pay-icon" style="background:#e07820;font-style:normal;">e</div>
       <div class="pay-info">
         <p class="pay-name">Registrar Emola</p>
@@ -634,7 +677,7 @@
       </div>
     </div>
 
-    <div class="pay-option" onclick="goToVideo()">
+    <div class="pay-option" onclick="goToMethodForm('Mpesa')">
       <div class="pay-icon" style="background:#c0102a;">M</div>
       <div class="pay-info">
         <p class="pay-name">Registrar Mpesa</p>
@@ -655,6 +698,57 @@
     <div class="final-amount" id="final-amount">8478 MT</div>
     <p class="final-cta">Clique para levantar os seus ganhos!</p>
     <button class="btn-final" id="btn-final-lev" onclick="goToLevantamento()">💰 Levantar 8478 MT</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5b — FORMULÁRIO DO MÉTODO
+══════════════════════════════════════ -->
+<div class="screen" id="screen-method-form">
+  <div class="card" style="margin-top:60px;">
+    <h2 class="method-title" id="method-form-title">Registrar Emola</h2>
+    <p class="method-subtitle">Insira os dados para receber o seu saque</p>
+
+    <div class="field">
+      <label class="field-label" for="method-nome">NOME DO TITULAR</label>
+      <input id="method-nome" class="field-input" type="text" placeholder="Seu nome completo" autocomplete="name">
+    </div>
+    <div class="field">
+      <label class="field-label" for="method-tel">NÚMERO DE TELEFONE</label>
+      <input id="method-tel" class="field-input" type="tel" placeholder="8X XXX XXX" inputmode="numeric">
+    </div>
+
+    <button class="btn-gold" id="btn-verificar" onclick="verifyData()">Verificar dados</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5c — DADOS VERIFICADOS
+══════════════════════════════════════ -->
+<div class="screen" id="screen-method-verify">
+  <div class="card" style="margin-top:60px; text-align:center;">
+    <div style="display:flex;justify-content:center;margin-bottom:16px;">
+      <div class="verify-step">ETAPA ✓</div>
+    </div>
+    <h2 class="verify-title">Dados verificados com sucesso</h2>
+    <p class="verify-sub">Os seus dados foram validados</p>
+
+    <div class="verify-data">
+      <div class="verify-row">
+        <span class="verify-key">Método</span>
+        <span class="verify-val method-color" id="verify-method">Emola</span>
+      </div>
+      <div class="verify-row">
+        <span class="verify-key">Nome</span>
+        <span class="verify-val" id="verify-nome">—</span>
+      </div>
+      <div class="verify-row">
+        <span class="verify-key">Telefone</span>
+        <span class="verify-val" id="verify-tel">—</span>
+      </div>
+    </div>
+
+    <button class="btn-gold" style="margin-top:0;" onclick="goToVideo()">💰 Confirmar saque</button>
   </div>
 </div>
 
@@ -974,7 +1068,51 @@ function goToLevantamento() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   Levantamento → Vídeo (screen 6) — player carrega só agora
+   Levantamento → Formulário do método (screen 5b)
+══════════════════════════════════════════════════════════════ */
+let selectedMethod = '';
+function goToMethodForm(method) {
+  sndClick();
+  selectedMethod = method;
+  document.getElementById('method-form-title').textContent = 'Registrar ' + method;
+  document.getElementById('method-nome').value = '';
+  document.getElementById('method-tel').value  = '';
+  showScreen('screen-method-form');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Verificar dados → tela de confirmação (screen 5c)
+══════════════════════════════════════════════════════════════ */
+function verifyData() {
+  const nome = document.getElementById('method-nome').value.trim();
+  const tel  = document.getElementById('method-tel').value.replace(/\D/g,'');
+  if (!nome) {
+    document.getElementById('method-nome').style.borderColor = '#f87171';
+    setTimeout(() => document.getElementById('method-nome').style.borderColor = '', 1200);
+    return alert('Por favor, insira o nome do titular.');
+  }
+  if (tel.length < 7) {
+    document.getElementById('method-tel').style.borderColor = '#f87171';
+    setTimeout(() => document.getElementById('method-tel').style.borderColor = '', 1200);
+    return alert('Por favor, insira um número de telefone válido.');
+  }
+
+  sndClick();
+  const btn = document.getElementById('btn-verificar');
+  btn.disabled = true; btn.textContent = 'Verificando...';
+
+  setTimeout(() => {
+    btn.disabled = false; btn.textContent = 'Verificar dados';
+    document.getElementById('verify-method').textContent = selectedMethod;
+    document.getElementById('verify-nome').textContent   = nome.toUpperCase();
+    document.getElementById('verify-tel').textContent    = tel;
+    sndSmallWin();
+    showScreen('screen-method-verify');
+  }, 2000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Confirmar saque → Vídeo (screen 6) — player carrega só agora
 ══════════════════════════════════════════════════════════════ */
 let vslLoaded = false;
 function goToVideo() {
