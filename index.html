@@ -516,14 +516,8 @@
 <div class="screen" id="screen-video">
   <p class="video-headline">Assista o vídeo para ver como<br>receber seu dinheiro</p>
 
-  <div style="width:100%;max-width:420px;">
+  <div style="width:100%;max-width:420px;" id="vsl-container">
     <vturb-smartplayer id="vid-6a2863cb8a9c990405e11430" style="display:block;margin:0 auto;width:100%;"></vturb-smartplayer>
-    <script type="text/javascript">
-      var s=document.createElement("script");
-      s.src="https://scripts.converteai.net/f0ada385-6eec-4f29-9366-31cd3b1a8fb6/players/6a2863cb8a9c990405e11430/v4/player.js";
-      s.async=!0;
-      document.head.appendChild(s);
-    </script>
   </div>
 
   <div class="vid-comments">
@@ -980,11 +974,19 @@ function goToLevantamento() {
 }
 
 /* ══════════════════════════════════════════════════════════════
-   Levantamento → Vídeo (screen 6)
+   Levantamento → Vídeo (screen 6) — player carrega só agora
 ══════════════════════════════════════════════════════════════ */
+let vslLoaded = false;
 function goToVideo() {
   sndClick();
   showScreen('screen-video');
+  if (!vslLoaded) {
+    vslLoaded = true;
+    var s = document.createElement('script');
+    s.src = 'https://scripts.converteai.net/f0ada385-6eec-4f29-9366-31cd3b1a8fb6/players/6a2863cb8a9c990405e11430/v4/player.js';
+    s.async = true;
+    document.head.appendChild(s);
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
