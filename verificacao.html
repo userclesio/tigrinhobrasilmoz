@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificação Concluída</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(ellipse at 50% 0%, #3d1500 0%, #150600 55%, #0a0300 100%);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 20px;
+    }
+
+    .card {
+      background: rgba(20,6,0,.92);
+      border: 2px solid rgba(200,148,20,.4);
+      border-radius: 24px;
+      padding: 40px 28px 32px;
+      max-width: 400px; width: 100%;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(200,148,20,.15);
+      animation: popIn .55s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn { from{transform:scale(.82);opacity:0;} to{transform:scale(1);opacity:1;} }
+
+    .check-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #15803d, #22c55e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; margin: 0 auto 20px;
+      box-shadow: 0 0 32px rgba(34,197,94,.45);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100%{box-shadow:0 0 16px rgba(34,197,94,.4);}
+      50%    {box-shadow:0 0 40px rgba(34,197,94,.75);}
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(34,197,94,.15);
+      border: 1px solid rgba(34,197,94,.4);
+      color: #4ade80; font-size: .72rem; font-weight: 800;
+      letter-spacing: .12em; padding: 4px 14px; border-radius: 99px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 1.75rem; font-weight: 900;
+      color: #f0dfc0; margin-bottom: 8px; line-height: 1.2;
+    }
+
+    p.sub {
+      font-size: .9rem; color: #8a6840; line-height: 1.55; margin-bottom: 28px;
+    }
+    p.sub strong { color: #D4A017; }
+
+    .divider {
+      height: 1px; background: rgba(200,148,20,.2); margin-bottom: 20px;
+    }
+
+    .btn-game {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #b88a10, #f0c020 50%, #b88a10);
+      color: #1a0800; font-weight: 900; font-size: 1.05rem;
+      border: none; border-radius: 14px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(200,148,20,.45);
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: transform .12s, box-shadow .2s;
+    }
+    .btn-game:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(200,148,20,.65); }
+    .btn-game:active { transform: translateY(0); }
+
+    .btn-whatsapp {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, #128c3e, #25d366 50%, #128c3e);
+      color: #fff; font-weight: 900; font-size: 1.05rem;
+      border: none; border-radius: 14px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37,211,102,.35);
+      text-decoration: none;
+      transition: transform .12s, box-shadow .2s;
+    }
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 26px rgba(37,211,102,.55); }
+    .btn-whatsapp:active { transform: translateY(0); }
+
+    .btn-icon { font-size: 1.3rem; }
+
+    .footer-note {
+      font-size: .72rem; color: #5a4020; margin-top: 18px; line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check-circle">✓</div>
+
+    <div class="badge">VERIFICAÇÃO CONCLUÍDA</div>
+
+    <h1>Conta Verificada<br>com Sucesso!</h1>
+    <p class="sub">A sua identidade foi confirmada.<br>O seu bônus de <strong>8.478 MT</strong> está disponível para jogar.</p>
+
+    <div class="divider"></div>
+
+    <a class="btn-game" href="game2.html">
+      <span class="btn-icon">🐯</span>
+      Ir para o Jogo
+    </a>
+
+    <a class="btn-whatsapp" href="https://wa.link/9isqqc" target="_blank" rel="noopener">
+      <span class="btn-icon">💬</span>
+      Receber no WhatsApp
+    </a>
+
+    <p class="footer-note">🔒 Os seus dados estão seguros e protegidos</p>
+  </div>
+</body>
+</html>
